@@ -72,6 +72,8 @@ struct task_struct{
     
     FILE * file;//文件信息
 
+    struct shared_memory* shm;
+
     // struct list_head stack_vma_head;//用户栈表头
     // struct list_head code_vma_head;//代码区表头
     // struct list_head heap_vma_head;//数据区表头
@@ -90,9 +92,9 @@ typedef union{
 #define KERNEL_STACK_SIZE 4096
 
 
-extern list_pcb pcbs;//进程队列
-extern unsigned char idmap[32];//设置256个进程id
-void copy_context(context* src, context* dest); 
+list_pcb pcbs;//进程队列
+unsigned char idmap[32];//设置256个进程id
+
 void task_test();
 //init进程设置以及相关中断、系统调用注册
 void init_task();
@@ -108,6 +110,6 @@ unsigned int  del_task(unsigned int asid);
 
 unsigned int do_fork(context* args,PCB*parent);
 
-pgd_term *copy_pagetables(PCB* child,PCB* parent);
+pgd_term *copy_pagetables(PCB * parent);
 
 #endif

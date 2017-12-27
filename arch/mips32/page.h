@@ -70,10 +70,6 @@ void set_pgd_attr(pgd_term *pgd,unsigned int attr);
 void set_pte_attr(pte_term *pte,unsigned int attr);
 //分配一张页的空间，并把物理页与虚拟页做一次映射
 unsigned int do_one_mapping(pgd_term*pgd,unsigned int va,unsigned int pa,unsigned int attr);
-void tlbwi(unsigned int virtual_addr,unsigned int asid,unsigned int pte_con,unsigned int index);
-void tlbwr(unsigned int virtual_addr,unsigned int asid,unsigned int pte_con);
-void tlbp(unsigned int virtual_addr,unsigned int asid );
-unsigned int get_tlb_index();
 
 
 
@@ -82,13 +78,13 @@ typedef struct {
     unsigned int reserved1 : 12;
     unsigned int Mask : 16;
     unsigned int reserved0 : 4;
-} PageMask;
+} __PageMask;
 
 typedef struct {
     unsigned int ASID : 8;
     unsigned int reserved : 5;
     unsigned int VPN2 : 19;
-} EntryHi;
+} __EntryHi;
 
 typedef struct {
     unsigned int G : 1;
@@ -97,13 +93,13 @@ typedef struct {
     unsigned int C : 3;
     unsigned int PFN : 24;
     unsigned int reserved : 2;
-} EntryLo;
+} __EntryLo;
 
 typedef struct {
-    EntryLo EntryLo0;
-    EntryLo EntryLo1;
-    EntryHi EntryHi;
-    PageMask PageMask;//页大小为4KB，因此PageMask的值为0
+    __EntryLo EntryLo0;
+    __EntryLo EntryLo1;
+    __EntryHi EntryHi;
+    __PageMask PageMask;//页大小为4KB，因此PageMask的值为0
 } PageTableEntry;
 
 
